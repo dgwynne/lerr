@@ -18,7 +18,7 @@
 #ifndef _LOG_H_
 #define _LOG_H_
 
-struct loggers {
+struct __logger {
 	__dead void (*err)(int, const char *, ...)
 	    __attribute__((__format__ (printf, 2, 3)));
 	__dead void (*errx)(int, const char *, ...)
@@ -33,14 +33,14 @@ struct loggers {
 	    __attribute__((__format__ (printf, 1, 2)));
 };
 
-extern const struct loggers *logger;
+extern const struct __logger *__logger;
 
-#define lerr(_e, _f...) logger->err((_e), _f)
-#define lerrx(_e, _f...) logger->errx((_e), _f)
-#define lwarn(_f...) logger->warn(_f)
-#define lwarnx(_f...) logger->warnx(_f)
-#define linfo(_f...) logger->info(_f)
-#define ldebug(_f...) logger->debug(_f)
+#define lerr(_e, _f...) __logger->err((_e), _f)
+#define lerrx(_e, _f...) __logger->errx((_e), _f)
+#define lwarn(_f...) __logger->warn(_f)
+#define lwarnx(_f...) __logger->warnx(_f)
+#define linfo(_f...) __logger->info(_f)
+#define ldebug(_f...) __logger->debug(_f)
 
 void	logger_syslog(const char *);
 

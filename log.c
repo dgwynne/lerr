@@ -26,7 +26,7 @@
 
 #include "log.h"
 
-const struct loggers conslogger = {
+static const struct __logger conslogger = {
 	err,
 	errx,
 	warn,
@@ -50,7 +50,7 @@ static void		syslog_debug(const char *, ...)
 static void		syslog_vstrerror(int, int, const char *, va_list)
 			    __attribute__((__format__ (printf, 3, 0)));
 
-static const struct loggers syslogger = {
+static const struct __logger syslogger = {
 	syslog_err,
 	syslog_errx,
 	syslog_warn,
@@ -59,7 +59,7 @@ static const struct loggers syslogger = {
 	syslog_debug
 };
 
-const struct loggers *logger = &conslogger;
+const struct __logger *__logger = &conslogger;
 
 void
 logger_syslog(const char *progname)
@@ -67,7 +67,7 @@ logger_syslog(const char *progname)
 	openlog(progname, LOG_PID | LOG_NDELAY, LOG_DAEMON);
 	tzset();
 
-	logger = &syslogger;
+	__logger = &syslogger;
 }
 
 static void
