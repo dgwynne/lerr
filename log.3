@@ -1,0 +1,97 @@
+.\"	$OpenBSD: syslog.3,v 1.34 2017/08/29 18:23:01 millert Exp $
+.\"
+.\"
+.\"
+.\" Copyright (c) 2018 David Gwynne <dlg@openbsd.org>
+.\"
+.\" Permission to use, copy, modify, and distribute this software for any
+.\" purpose with or without fee is hereby granted, provided that the above
+.\" copyright notice and this permission notice appear in all copies.
+.\"
+.\" THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+.\" WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+.\" MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+.\" ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+.\" WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+.\" ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+.\" OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+.\"
+.Dd $Mdocdate: August 29 2017 $
+.Dt LOG 3
+.Os
+.Sh NAME
+.Nm lerr ,
+.Nm lerrx ,
+.Nm lwarn ,
+.Nm lwarnx ,
+.Nm linfo ,
+.Nm ldebug ,
+.Nm logger_syslog
+.Nd Logging API for daemons
+.Sh SYNOPSIS
+.In log.h
+.Ft void
+.Fn lerr "int ecode" "const char *fmt" "..."
+.Ft void
+.Fn lerrx "int ecode" "const char *fmt" "..."
+.Ft void
+.Fn lwarn "const char *fmt" "..."
+.Ft void
+.Fn lwarnx "const char *fmt" "..."
+.Ft void
+.Fn linfo "const char *fmt" "..."
+.Ft void
+.Fn ldebug "const char *fmt" "..."
+.Ft void
+.Fn logger_syslog "const char *progname"
+.Sh DESCRIPTION
+This API supports logging by daemons, either to syslog or
+to the console.
+.Pp
+By default logging is output to the console via the
+.Xr err 3
+and
+.Xr warn 3
+family of functions.
+However, if the daemon forks, the same API can be directed to syslog.
+.Pp
+.Nm lerr ,
+.Nm lerrx ,
+.Nm lwarn ,
+and
+.Nm lwarnx
+are equivalent to
+.Xr err 3 ,
+.Xr errx 3 ,
+.Xr warn 3 ,
+and
+.Xr warnx 3
+respectively.
+.Pp
+.Nm linfo
+and
+.Nm ldebug
+can be used to log information at the
+.Dv LOG_INFO
+and
+.DV LOG_DEBUG
+log levels.
+.Xr warnx 3
+is used as the backend for these functions in console logger.
+.Pp
+.Nm logger_syslog
+is used to switch the logger from console output to using syslog.
+Internally it passes the
+.Fa progname
+argument as the ident argument to
+.Xr openlog 3 .
+.Sh EXAMPLES
+.Bd -literal -offset indent
+if (!debug) {
+	logger_syslog(getprogname());
+}
+linfo("program has started");
+.Ed
+.Sh SEE ALSO
+.Xr err 3 ,
+.Xr syslog 3
