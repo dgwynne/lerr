@@ -1,10 +1,10 @@
-# `lerr` - `err(3)` style logging API with console and syslog backends
+# `lerr()` - `err(3)` style logging API with console and syslog backends
 
 This API supports logging by daemons, either to syslog or
-to the console.
-
-By default logging is output to the console via the
+to the console. It is modelled after the API provided by the
 [`err(3)`](https://man.openbsd.org/err.3) family of functions.
+
+By default logging is output to the console via the `err(3)` API.
 However, if the daemon forks, the same API can be directed to syslog.
 
 ## API
