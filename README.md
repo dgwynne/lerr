@@ -10,7 +10,7 @@ However, if the daemon forks, the same API can be directed to syslog.
 ## API
 
 `lerr()`, `lerrx()`, `lwarn()`, and `lwarnx()` are equivalent to
-`err()`, `lerr()`, `warn()`, and `warnx()` respectively.
+`err()`, `errx()`, `warn()`, and `warnx()` respectively.
 
 `linfo()` and `ldebug()` can be used to log information at the
 `LOG_INFO` and `LOG_DEBUG` log levels in the `syslog()` backend.
